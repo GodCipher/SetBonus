@@ -4,7 +4,12 @@ import com.jeff_media.armorequipevent.ArmorEquipEvent;
 import de.godcipher.setbonus.listener.SetBonusListener;
 import de.godcipher.setbonus.scheduler.EquipmentUpdateScheduler;
 import de.godcipher.setbonus.scheduler.PassiveStatsScheduler;
+import de.godcipher.setbonus.set.EffectType;
 import de.godcipher.setbonus.set.SetBonusMapper;
+import de.godcipher.setbonus.set.SetType;
+import java.io.File;
+import java.util.EnumMap;
+import java.util.Map;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +21,7 @@ public final class SetBonusPlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     setupBStats();
+    generateDefaultConfig();
     loadConfig();
     loadFromConfig();
     startScheduler();
@@ -48,5 +54,27 @@ public final class SetBonusPlugin extends JavaPlugin {
 
   private void setupBStats() {
     new Metrics(this, 22885);
+  }
+
+  private void generateDefaultConfig() {
+    File configFile = new File(getDataFolder(), "config.yml");
+
+    if (!configFile.exists()) {
+      getConfig().options().header("ALL VALUES ARE PERCENTAGES");
+
+      for (SetType setType : SetType.values()) {
+        Map<EffectType, Integer> defaultValues = new EnumMap<>(EffectType.class);
+
+        for (EffectType effectType : EffectType.values()) {
+          defaultValues.put(effectType, 0);
+        }
+
+        for (Map.Entry<EffectType, Integer> entry : defaultValues.entrySet()) {
+          getConfig().set(setType.name() + "." + entry.getKey().getConfigName(), entry.getValue());
+        }
+      }
+
+      saveConfig();
+    }
   }
 }
