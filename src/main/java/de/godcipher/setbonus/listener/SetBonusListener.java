@@ -9,6 +9,7 @@ import de.godcipher.setbonus.util.ItemStackUtil;
 import de.godcipher.setbonus.util.PlayerEquipmentChecker;
 import org.bukkit.Material;
 import org.bukkit.enchantments.EnchantmentTarget;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -61,6 +62,11 @@ public class SetBonusListener implements Listener {
             baseDamage * playerStats.getStats().get(StatType.EXPLOSION_DAMAGE_REDUCTION) / 100.0;
       }
 
+      if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+        reducedDamage -=
+            baseDamage * playerStats.getStats().get(StatType.FALL_DAMAGE_REDUCTION) / 100.0;
+      }
+
       reducedDamage = Math.max(0, reducedDamage);
       event.setDamage(reducedDamage);
     }
@@ -105,6 +111,17 @@ public class SetBonusListener implements Listener {
 
       double damage = event.getDamage();
       event.setDamage(damage * (1 + playerStats.getStats().get(StatType.MELEE_DAMAGE) / 100.0));
+
+      if (playerStats.getStats().get(StatType.DAMAGE_REFLECTION) > 0) {
+        if (event.getEntity() instanceof LivingEntity) {
+          ((LivingEntity) event.getEntity())
+              .damage(
+                  event.getDamage()
+                      * playerStats.getStats().get(StatType.DAMAGE_REFLECTION)
+                      / 100.0,
+                  player);
+        }
+      }
     }
   }
 

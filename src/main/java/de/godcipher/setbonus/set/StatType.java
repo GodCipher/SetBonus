@@ -11,6 +11,8 @@ public enum StatType {
   PROJECTILE_DAMAGE_REDUCTION("projectile-damage-reduction", "Projectile Damage Reduction"),
   DAMAGE_REDUCTION("damage-reduction", "Damage Reduction"),
   FIRE_DAMAGE_REDUCTION("fire-damage-reduction", "Fire Damage Reduction"),
+  FALL_DAMAGE_REDUCTION("fall-damage-reduction", "Fall Damage Reduction"),
+  DAMAGE_REFLECTION("damage-reflection", "Damage Reflection"),
   DROP_CHANCE("drop-chance", "Drop Chance"),
   EXPERIENCE_GAIN("experience-gain", "Experience Gain"),
   REGENERATION("regeneration", "Regeneration"),
