@@ -10,8 +10,11 @@ import de.godcipher.setbonus.set.SetType;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SetBonusPlugin extends JavaPlugin {
@@ -22,7 +25,7 @@ public final class SetBonusPlugin extends JavaPlugin {
   public void onEnable() {
     setupBStats();
     loadConfig();
-    generateDefaultConfig();
+    generateAndMergeConfig();
     loadFromConfig();
     startScheduler();
     registerListener();
@@ -43,8 +46,8 @@ public final class SetBonusPlugin extends JavaPlugin {
 
   private void startScheduler() {
     getServer()
-        .getScheduler()
-        .runTaskTimer(this, new EquipmentUpdateScheduler(setBonusMapper), 0, 20);
+            .getScheduler()
+            .runTaskTimer(this, new EquipmentUpdateScheduler(setBonusMapper), 0, 20);
     getServer().getScheduler().runTaskTimer(this, new PassiveStatsScheduler(setBonusMapper), 0, 20);
   }
 
@@ -57,42 +60,41 @@ public final class SetBonusPlugin extends JavaPlugin {
     new Metrics(this, 22885);
   }
 
-  private void generateDefaultConfig() {
+  private void generateAndMergeConfig() {
     File configFile = new File(getDataFolder(), "config.yml");
+    FileConfiguration existingConfig = YamlConfiguration.loadConfiguration(configFile);
 
-    if (isConfigEmpty()) {
-      try (PrintWriter writer = new PrintWriter(configFile)) {
-        writer.println("# ALL VALUES ARE PERCENTAGES\n");
-        writeDisplayNames(writer);
-        writeSetBonusValues(writer);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+    try (PrintWriter writer = new PrintWriter(configFile)) {
+      writer.println("# ALL VALUES ARE PERCENTAGES\n");
+      writeDisplayNames(writer, existingConfig);
+      writeSetBonusValues(writer, existingConfig);
+    } catch (IOException e) {
+      getLogger().log(Level.SEVERE, "Could not create config.yml", e);
     }
   }
 
-  private void writeDisplayNames(PrintWriter writer) {
+  private void writeDisplayNames(PrintWriter writer, FileConfiguration existingConfig) {
     writer.println("# Display Names");
     for (EffectType effectType : EffectType.values()) {
-      writer.printf(
-          "%s-display-name: %s%n", effectType.getConfigName(), effectType.getDisplayName());
+      String key = effectType.getConfigName() + "-display-name";
+      String displayName = existingConfig.contains(key) ? existingConfig.getString(key) : effectType.getDisplayName();
+      writer.printf("%s-display-name: %s%n", effectType.getConfigName(), displayName);
     }
     writer.println();
   }
 
-  private void writeSetBonusValues(PrintWriter writer) {
+  private void writeSetBonusValues(PrintWriter writer, FileConfiguration existingConfig) {
     writer.println("# Set Bonus Values");
     for (SetType setType : SetType.values()) {
       writer.println(setType.name() + ":");
       for (EffectType effectType : EffectType.values()) {
-        writer.printf("  %s: %d%n", effectType.getConfigName(), 0);
+        String effectKey = effectType.getConfigName();
+        String fullKey = setType.name() + "." + effectKey;
+        int value = existingConfig.contains(fullKey) ? existingConfig.getInt(fullKey) : 0;
+        writer.printf("  %s: %d%n", effectKey, value);
       }
       writer.println();
     }
-  }
-
-  private boolean isConfigEmpty() {
-    return getConfig().getKeys(false).isEmpty();
   }
 
   private void updateEffectTypeDisplayNames() {
