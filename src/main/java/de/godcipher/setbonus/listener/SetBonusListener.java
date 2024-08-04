@@ -1,12 +1,12 @@
 package de.godcipher.setbonus.listener;
 
 import com.jeff_media.armorequipevent.ArmorEquipEvent;
-import de.godcipher.setbonus.util.EffectType;
+import de.godcipher.setbonus.set.EffectType;
 import de.godcipher.setbonus.util.ItemStackUtil;
 import de.godcipher.setbonus.util.PlayerEquipmentChecker;
-import de.godcipher.setbonus.util.SetBonusMapper;
-import de.godcipher.setbonus.util.SetBonusStats;
-import de.godcipher.setbonus.util.SetType;
+import de.godcipher.setbonus.set.SetBonusMapper;
+import de.godcipher.setbonus.set.SetBonusStats;
+import de.godcipher.setbonus.set.SetType;
 import org.bukkit.Material;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package de.godcipher.setbonus.util;
+package de.godcipher.setbonus.set;
 
 public enum EffectType {
   SPEED("speed", "Speed"),

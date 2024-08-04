@@ -4,7 +4,7 @@ import com.jeff_media.armorequipevent.ArmorEquipEvent;
 import de.godcipher.setbonus.listener.SetBonusListener;
 import de.godcipher.setbonus.scheduler.EquipmentUpdateScheduler;
 import de.godcipher.setbonus.scheduler.PassiveStatsScheduler;
-import de.godcipher.setbonus.util.SetBonusMapper;
+import de.godcipher.setbonus.set.SetBonusMapper;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

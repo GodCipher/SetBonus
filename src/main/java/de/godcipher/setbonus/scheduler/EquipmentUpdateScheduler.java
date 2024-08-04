@@ -2,8 +2,8 @@ package de.godcipher.setbonus.scheduler;
 
 import de.godcipher.setbonus.util.ItemStackUtil;
 import de.godcipher.setbonus.util.PlayerEquipmentChecker;
-import de.godcipher.setbonus.util.SetBonusMapper;
-import de.godcipher.setbonus.util.SetType;
+import de.godcipher.setbonus.set.SetBonusMapper;
+import de.godcipher.setbonus.set.SetType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

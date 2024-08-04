@@ -2,6 +2,8 @@ package de.godcipher.setbonus.util;
 
 import java.util.EnumMap;
 import java.util.Map;
+
+import de.godcipher.setbonus.set.SetType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
