@@ -2,11 +2,11 @@ package de.godcipher.setbonus.listener;
 
 import com.jeff_media.armorequipevent.ArmorEquipEvent;
 import de.godcipher.setbonus.set.EffectType;
-import de.godcipher.setbonus.util.ItemStackUtil;
-import de.godcipher.setbonus.util.PlayerEquipmentChecker;
 import de.godcipher.setbonus.set.SetBonusMapper;
 import de.godcipher.setbonus.set.SetBonusStats;
 import de.godcipher.setbonus.set.SetType;
+import de.godcipher.setbonus.util.ItemStackUtil;
+import de.godcipher.setbonus.util.PlayerEquipmentChecker;
 import org.bukkit.Material;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
@@ -124,7 +124,7 @@ public class SetBonusListener implements Listener {
 
   @EventHandler
   public void onKill(EntityDeathEvent event) {
-    if (event.getEntity().getKiller() != null) {
+    if (!(event.getEntity() instanceof Player) && event.getEntity().getKiller() != null) {
       Player player = event.getEntity().getKiller();
       SetType setType = PlayerEquipmentChecker.getSetType(player);
       if (setType == null) {
