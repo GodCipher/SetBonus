@@ -18,6 +18,7 @@ public enum StatType {
   REGENERATION("regeneration", "Regeneration"),
   FOOD_SATURATION("food-saturation", "Food Saturation"),
   EXPLOSION_DAMAGE_REDUCTION("explosion-damage-reduction", "Explosion Damage Reduction"),
+  MONSTER_INVISIBILITY("monster-invisibility", "Monster Invisibility"),
   MAX_HEALTH("max-health", "Max Health");
 
   private final String configName;
