@@ -42,7 +42,7 @@ public class EquipmentUpdateScheduler implements Runnable {
       if (itemStack == null || !ItemStackUtil.isArmor(itemStack)) continue;
       itemsProcessed++;
       boolean isActive = itemsProcessed / 4.0 <= setPercentage && active;
-      SetType setType = ItemStackUtil.determineSetType(itemStack);
+      SetType setType = SetType.determineSetType(itemStack);
       ItemStackUtil.applyLoreToItem(
           itemStack, setBonusMapper.getSetBonusStatsMap().get(setType), isActive, setPercentage);
     }

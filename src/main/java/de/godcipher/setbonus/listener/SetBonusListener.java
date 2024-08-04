@@ -217,7 +217,7 @@ public class SetBonusListener implements Listener {
       return;
     }
 
-    SetType setType = ItemStackUtil.determineSetType(oldArmorPiece);
+    SetType setType = SetType.determineSetType(oldArmorPiece);
     SetBonusStats setBonusStats = setBonusMapper.getSetBonusStatsMap().get(setType);
 
     ItemStackUtil.applyLoreToItem(oldArmorPiece, setBonusStats, false, 0);

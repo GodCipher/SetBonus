@@ -2,7 +2,6 @@ package de.godcipher.setbonus.util;
 
 import de.godcipher.setbonus.set.StatType;
 import de.godcipher.setbonus.set.SetBonusStats;
-import de.godcipher.setbonus.set.SetType;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -37,13 +36,6 @@ public class ItemStackUtil {
 
   public static boolean isArmor(ItemStack itemStack) {
     return EnchantmentTarget.ARMOR.includes(itemStack);
-  }
-
-  public static SetType determineSetType(ItemStack itemStack) {
-    return Arrays.stream(SetType.values())
-        .filter(setType -> itemStack.getType().name().contains(setType.getArmorType()))
-        .findFirst()
-        .orElse(null);
   }
 
   private static List<Map.Entry<StatType, Integer>> getPositiveBonuses(
