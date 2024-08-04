@@ -14,11 +14,11 @@ public class SetBonusMapper {
     for (SetType setType : SetType.values()) {
       ConfigurationSection section = configuration.getConfigurationSection(setType.getArmorType());
       if (section != null) {
-        Map<EffectType, Integer> effectStats = new EnumMap<>(EffectType.class);
+        Map<StatType, Integer> effectStats = new EnumMap<>(StatType.class);
 
-        for (EffectType effectType : EffectType.values()) {
-          int value = section.getInt(effectType.getConfigName(), 0);
-          effectStats.put(effectType, value);
+        for (StatType statType : StatType.values()) {
+          int value = section.getInt(statType.getConfigName(), 0);
+          effectStats.put(statType, value);
         }
 
         SetBonusStats bonusStats = new SetBonusStats(effectStats);

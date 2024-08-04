@@ -4,7 +4,7 @@ import com.jeff_media.armorequipevent.ArmorEquipEvent;
 import de.godcipher.setbonus.listener.SetBonusListener;
 import de.godcipher.setbonus.scheduler.EquipmentUpdateScheduler;
 import de.godcipher.setbonus.scheduler.PassiveStatsScheduler;
-import de.godcipher.setbonus.set.EffectType;
+import de.godcipher.setbonus.set.StatType;
 import de.godcipher.setbonus.set.SetBonusMapper;
 import de.godcipher.setbonus.set.SetType;
 import java.io.File;
@@ -75,20 +75,20 @@ public final class SetBonusPlugin extends JavaPlugin {
 
   private void writeDisplayNames(PrintWriter writer, FileConfiguration existingConfig) {
     writer.println("# Display Names");
-    for (EffectType effectType : EffectType.values()) {
-      String key = effectType.getConfigName() + "-display-name";
-      String displayName = existingConfig.contains(key) ? existingConfig.getString(key) : effectType.getDisplayName();
-      writer.printf("%s-display-name: %s%n", effectType.getConfigName(), displayName);
+    for (StatType statType : StatType.values()) {
+      String key = statType.getConfigName() + "-display-name";
+      String displayName = existingConfig.contains(key) ? existingConfig.getString(key) : statType.getDisplayName();
+      writer.printf("%s-display-name: %s%n", statType.getConfigName(), displayName);
     }
     writer.println();
   }
 
   private void writeSetBonusValues(PrintWriter writer, FileConfiguration existingConfig) {
-    writer.println("# Set Bonus Values");
+    writer.println("# Set Bonus Stats");
     for (SetType setType : SetType.values()) {
       writer.println(setType.name() + ":");
-      for (EffectType effectType : EffectType.values()) {
-        String effectKey = effectType.getConfigName();
+      for (StatType statType : StatType.values()) {
+        String effectKey = statType.getConfigName();
         String fullKey = setType.name() + "." + effectKey;
         int value = existingConfig.contains(fullKey) ? existingConfig.getInt(fullKey) : 0;
         writer.printf("  %s: %d%n", effectKey, value);
@@ -98,9 +98,9 @@ public final class SetBonusPlugin extends JavaPlugin {
   }
 
   private void updateEffectTypeDisplayNames() {
-    for (EffectType effectType : EffectType.values()) {
-      String configName = effectType.getConfigName();
-      effectType.setDisplayName(getConfig().getString(configName + "-display-name"));
+    for (StatType statType : StatType.values()) {
+      String configName = statType.getConfigName();
+      statType.setDisplayName(getConfig().getString(configName + "-display-name"));
     }
   }
 }

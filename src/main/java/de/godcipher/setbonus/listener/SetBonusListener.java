@@ -1,7 +1,7 @@
 package de.godcipher.setbonus.listener;
 
 import com.jeff_media.armorequipevent.ArmorEquipEvent;
-import de.godcipher.setbonus.set.EffectType;
+import de.godcipher.setbonus.set.StatType;
 import de.godcipher.setbonus.set.SetBonusMapper;
 import de.godcipher.setbonus.set.SetBonusStats;
 import de.godcipher.setbonus.set.SetType;
@@ -44,20 +44,20 @@ public class SetBonusListener implements Listener {
           setBonusStats.getPercentageOfStats(
               PlayerEquipmentChecker.getPlayerSetPercentage(player, setType));
 
-      reducedDamage -= baseDamage * playerStats.getStats().get(EffectType.DAMAGE_REDUCTION) / 100.0;
+      reducedDamage -= baseDamage * playerStats.getStats().get(StatType.DAMAGE_REDUCTION) / 100.0;
       if (event.getCause() == EntityDamageEvent.DamageCause.FIRE) {
         reducedDamage -=
-            baseDamage * playerStats.getStats().get(EffectType.FIRE_DAMAGE_REDUCTION) / 100.0;
+            baseDamage * playerStats.getStats().get(StatType.FIRE_DAMAGE_REDUCTION) / 100.0;
       }
 
       if (event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
         reducedDamage -=
-            baseDamage * playerStats.getStats().get(EffectType.PROJECTILE_DAMAGE_REDUCTION) / 100.0;
+            baseDamage * playerStats.getStats().get(StatType.PROJECTILE_DAMAGE_REDUCTION) / 100.0;
       }
 
       if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {
         reducedDamage -=
-            baseDamage * playerStats.getStats().get(EffectType.EXPLOSION_DAMAGE_REDUCTION) / 100.0;
+            baseDamage * playerStats.getStats().get(StatType.EXPLOSION_DAMAGE_REDUCTION) / 100.0;
       }
 
       reducedDamage = Math.max(0, reducedDamage);
@@ -80,7 +80,7 @@ public class SetBonusListener implements Listener {
               PlayerEquipmentChecker.getPlayerSetPercentage(player, setType));
 
       double damage = event.getDamage();
-      event.setDamage(damage * (1 + playerStats.getStats().get(EffectType.MELEE_DAMAGE) / 100.0));
+      event.setDamage(damage * (1 + playerStats.getStats().get(StatType.MELEE_DAMAGE) / 100.0));
     }
   }
 
@@ -100,7 +100,7 @@ public class SetBonusListener implements Listener {
     event.setAmount(
         (int)
             (event.getAmount()
-                * (1 + playerStats.getStats().get(EffectType.EXPERIENCE_GAIN) / 100.0)));
+                * (1 + playerStats.getStats().get(StatType.EXPERIENCE_GAIN) / 100.0)));
   }
 
   @EventHandler
@@ -118,7 +118,7 @@ public class SetBonusListener implements Listener {
               PlayerEquipmentChecker.getPlayerSetPercentage(player, setType));
 
       event.setAmount(
-          event.getAmount() * (1 + playerStats.getStats().get(EffectType.REGENERATION) / 100.0));
+          event.getAmount() * (1 + playerStats.getStats().get(StatType.REGENERATION) / 100.0));
     }
   }
 
@@ -136,8 +136,8 @@ public class SetBonusListener implements Listener {
           setBonusStats.getPercentageOfStats(
               PlayerEquipmentChecker.getPlayerSetPercentage(player, setType));
 
-      if (playerStats.getStats().get(EffectType.DROP_CHANCE) > 0) {
-        if (Math.random() < playerStats.getStats().get(EffectType.DROP_CHANCE) / 100.0) {
+      if (playerStats.getStats().get(StatType.DROP_CHANCE) > 0) {
+        if (Math.random() < playerStats.getStats().get(StatType.DROP_CHANCE) / 100.0) {
           event.getDrops().forEach(item -> item.setAmount(item.getAmount() * 2));
         }
       }

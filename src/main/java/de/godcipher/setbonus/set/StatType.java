@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public enum EffectType {
+public enum StatType {
   SPEED("speed", "Speed"),
   MELEE_DAMAGE("melee-damage", "Melee Damage"),
   PROJECTILE_DAMAGE_REDUCTION("projectile-damage-reduction", "Projectile Damage Reduction"),
@@ -21,13 +21,7 @@ public enum EffectType {
   @Setter private String displayName;
   private final String defaultDisplayName;
 
-  /**
-   * Constructor for EffectType.
-   *
-   * @param configName The configuration name for internal use.
-   * @param displayName The human-readable name for display.
-   */
-  EffectType(String configName, String displayName) {
+  StatType(String configName, String displayName) {
     this.configName = configName;
     this.displayName = displayName;
     this.defaultDisplayName = displayName;
@@ -44,8 +38,8 @@ public enum EffectType {
    * @param configName The configuration name to look for.
    * @return The matching EffectType, or null if none found.
    */
-  public static EffectType fromConfigName(String configName) {
-    for (EffectType type : EffectType.values()) {
+  public static StatType fromConfigName(String configName) {
+    for (StatType type : StatType.values()) {
       if (type.getConfigName().equalsIgnoreCase(configName)) {
         return type;
       }
@@ -59,7 +53,7 @@ public enum EffectType {
    * @param configMap A map containing configuration names and display names.
    */
   public static void loadDisplayNamesFromConfig(Map<String, String> configMap) {
-    for (EffectType type : EffectType.values()) {
+    for (StatType type : StatType.values()) {
       String newDisplayName = configMap.get(type.getConfigName());
       if (newDisplayName != null) {
         type.setDisplayName(newDisplayName);

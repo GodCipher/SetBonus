@@ -1,6 +1,6 @@
 package de.godcipher.setbonus.util;
 
-import de.godcipher.setbonus.set.EffectType;
+import de.godcipher.setbonus.set.StatType;
 import de.godcipher.setbonus.set.SetBonusStats;
 import de.godcipher.setbonus.set.SetType;
 import java.util.*;
@@ -21,7 +21,7 @@ public class ItemStackUtil {
     List<String> lore = new ArrayList<>(Arrays.asList(" ", BONUS_PREFIX));
 
     if (setBonusStats != null) {
-      List<Map.Entry<EffectType, Integer>> positiveBonuses = getPositiveBonuses(setBonusStats);
+      List<Map.Entry<StatType, Integer>> positiveBonuses = getPositiveBonuses(setBonusStats);
       if (positiveBonuses.isEmpty()) return;
       int bonusesToHighlight = (int) Math.round(positiveBonuses.size() * setPercentage);
 
@@ -46,14 +46,14 @@ public class ItemStackUtil {
         .orElse(null);
   }
 
-  private static List<Map.Entry<EffectType, Integer>> getPositiveBonuses(
+  private static List<Map.Entry<StatType, Integer>> getPositiveBonuses(
       SetBonusStats setBonusStats) {
     return setBonusStats.getStats().entrySet().stream()
         .filter(entry -> entry.getValue() > 0)
         .collect(Collectors.toList());
   }
 
-  private static String formatLoreLine(Map.Entry<EffectType, Integer> entry, boolean active) {
+  private static String formatLoreLine(Map.Entry<StatType, Integer> entry, boolean active) {
     String colorCode = active ? "§a" : "§7";
     return colorCode + "[" + entry.getKey().getDisplayName() + " +" + entry.getValue() + "%]";
   }

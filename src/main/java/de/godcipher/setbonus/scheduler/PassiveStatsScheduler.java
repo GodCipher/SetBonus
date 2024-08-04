@@ -1,6 +1,6 @@
 package de.godcipher.setbonus.scheduler;
 
-import de.godcipher.setbonus.set.EffectType;
+import de.godcipher.setbonus.set.StatType;
 import de.godcipher.setbonus.util.PlayerEquipmentChecker;
 import de.godcipher.setbonus.set.SetBonusMapper;
 import de.godcipher.setbonus.set.SetBonusStats;
@@ -35,17 +35,17 @@ public class PassiveStatsScheduler implements Runnable {
       SetBonusStats playerStats =
           setBonusStats.getPercentageOfStats(
               PlayerEquipmentChecker.getPlayerSetPercentage(player, setType));
-      Map<EffectType, Integer> stats = playerStats.getStats();
+      Map<StatType, Integer> stats = playerStats.getStats();
 
       player.setWalkSpeed(
           (float)
               (PLAYER_DEFAULT_SPEED
-                  + PLAYER_DEFAULT_SPEED * ((double) stats.get(EffectType.SPEED) / 100)));
+                  + PLAYER_DEFAULT_SPEED * ((double) stats.get(StatType.SPEED) / 100)));
       player
           .getAttribute(Attribute.GENERIC_MAX_HEALTH)
           .setBaseValue(
               PLAYER_DEFAULT_HEALTH
-                  + PLAYER_DEFAULT_HEALTH * ((double) stats.get(EffectType.MAX_HEALTH) / 100));
+                  + PLAYER_DEFAULT_HEALTH * ((double) stats.get(StatType.MAX_HEALTH) / 100));
     }
   }
 }

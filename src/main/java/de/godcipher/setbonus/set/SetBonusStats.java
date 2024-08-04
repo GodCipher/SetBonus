@@ -10,12 +10,12 @@ import lombok.Getter;
 @Getter
 public class SetBonusStats {
 
-  public static final SetBonusStats EMPTY = new SetBonusStats(new EnumMap<>(EffectType.class));
+  public static final SetBonusStats EMPTY = new SetBonusStats(new EnumMap<>(StatType.class));
 
-  private final Map<EffectType, Integer> stats;
+  private final Map<StatType, Integer> stats;
 
-  SetBonusStats(Map<EffectType, Integer> stats) {
-    this.stats = new EnumMap<>(EffectType.class);
+  SetBonusStats(Map<StatType, Integer> stats) {
+    this.stats = new EnumMap<>(StatType.class);
     this.stats.putAll(stats);
   }
 
@@ -31,7 +31,7 @@ public class SetBonusStats {
       return this;
     }
 
-    List<EffectType> nonZeroStats =
+    List<StatType> nonZeroStats =
         stats.entrySet().stream()
             .filter(entry -> entry.getValue() > 0)
             .map(Map.Entry::getKey)
@@ -39,10 +39,10 @@ public class SetBonusStats {
 
     int numberOfStatsToInclude = (int) Math.round(nonZeroStats.size() * percentage);
 
-    List<EffectType> selectedStats = nonZeroStats.subList(0, numberOfStatsToInclude);
+    List<StatType> selectedStats = nonZeroStats.subList(0, numberOfStatsToInclude);
 
-    Map<EffectType, Integer> selectedStatValues = new EnumMap<>(EffectType.class);
-    for (EffectType effect : EffectType.values()) {
+    Map<StatType, Integer> selectedStatValues = new EnumMap<>(StatType.class);
+    for (StatType effect : StatType.values()) {
       selectedStatValues.put(effect, selectedStats.contains(effect) ? stats.get(effect) : 0);
     }
 
@@ -52,10 +52,10 @@ public class SetBonusStats {
   /**
    * Get the percentage value for a specific EffectType.
    *
-   * @param effectType The effect type to retrieve the percentage for.
+   * @param statType The effect type to retrieve the percentage for.
    * @return The percentage value of the specified effect type.
    */
-  public int getEffectPercentage(EffectType effectType) {
-    return stats.getOrDefault(effectType, 0);
+  public int getEffectPercentage(StatType statType) {
+    return stats.getOrDefault(statType, 0);
   }
 }
