@@ -6,7 +6,7 @@
 
     <groupId>de.godcipher</groupId>
     <artifactId>setbonus</artifactId>
-    <version>1.0</version>
+    <version>1.1-Fix</version>
     <packaging>jar</packaging>
 
     <name>setbonus</name>
@@ -36,6 +36,10 @@
                         <relocation>
                             <pattern>com.jeff_media.armorequipevent</pattern>
                             <shadedPattern>de.luzifer.setbonus.armorequipevent</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>de.godcipher</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -85,6 +89,12 @@
             <groupId>com.jeff-media</groupId>
             <artifactId>armor-equip-event</artifactId>
             <version>1.0.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

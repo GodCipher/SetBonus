@@ -5,6 +5,7 @@ import de.godcipher.setbonus.listener.SetBonusListener;
 import de.godcipher.setbonus.scheduler.EquipmentUpdateScheduler;
 import de.godcipher.setbonus.scheduler.PassiveStatsScheduler;
 import de.godcipher.setbonus.util.SetBonusMapper;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +15,7 @@ public final class SetBonusPlugin extends JavaPlugin {
 
   @Override
   public void onEnable() {
+    setupBStats();
     loadConfig();
     loadFromConfig();
     startScheduler();
@@ -42,5 +44,9 @@ public final class SetBonusPlugin extends JavaPlugin {
   private void registerListener() {
     ArmorEquipEvent.registerListener(this);
     Bukkit.getPluginManager().registerEvents(new SetBonusListener(setBonusMapper), this);
+  }
+
+  private void setupBStats() {
+    new Metrics(this, 22885);
   }
 }
