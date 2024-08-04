@@ -8,8 +8,8 @@ import de.godcipher.setbonus.set.EffectType;
 import de.godcipher.setbonus.set.SetBonusMapper;
 import de.godcipher.setbonus.set.SetType;
 import java.io.File;
-import java.util.EnumMap;
-import java.util.Map;
+import java.io.IOException;
+import java.io.PrintWriter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,8 +21,8 @@ public final class SetBonusPlugin extends JavaPlugin {
   @Override
   public void onEnable() {
     setupBStats();
-    generateDefaultConfig();
     loadConfig();
+    generateDefaultConfig();
     loadFromConfig();
     startScheduler();
     registerListener();
@@ -33,10 +33,11 @@ public final class SetBonusPlugin extends JavaPlugin {
 
   private void loadConfig() {
     getConfig().options().copyDefaults(true);
-    saveConfig();
+    saveDefaultConfig();
   }
 
   private void loadFromConfig() {
+    updateEffectTypeDisplayNames();
     setBonusMapper.fromConfig(getConfig());
   }
 
@@ -59,22 +60,40 @@ public final class SetBonusPlugin extends JavaPlugin {
   private void generateDefaultConfig() {
     File configFile = new File(getDataFolder(), "config.yml");
 
-    if (!configFile.exists()) {
-      getConfig().options().header("ALL VALUES ARE PERCENTAGES");
+    if (isConfigEmpty()) {
+      try (PrintWriter writer = new PrintWriter(configFile)) {
+        writer.println("# ALL VALUES ARE PERCENTAGES\n");
 
-      for (SetType setType : SetType.values()) {
-        Map<EffectType, Integer> defaultValues = new EnumMap<>(EffectType.class);
-
+        writer.println("# Display Names");
         for (EffectType effectType : EffectType.values()) {
-          defaultValues.put(effectType, 0);
+          writer.println(
+              effectType.getConfigName() + "-display-name: " + effectType.getDisplayName());
         }
+        writer.println();
 
-        for (Map.Entry<EffectType, Integer> entry : defaultValues.entrySet()) {
-          getConfig().set(setType.name() + "." + entry.getKey().getConfigName(), entry.getValue());
+        writer.println("# Set Bonus Values");
+        for (SetType setType : SetType.values()) {
+          writer.println(setType.name() + ":");
+          for (EffectType effectType : EffectType.values()) {
+            String configName = effectType.getConfigName();
+            writer.println("  " + configName + ": " + 0);
+          }
+          writer.println();
         }
+      } catch (IOException e) {
+        e.printStackTrace();
       }
+    }
+  }
 
-      saveConfig();
+  private boolean isConfigEmpty() {
+    return getConfig().getKeys(false).isEmpty();
+  }
+
+  private void updateEffectTypeDisplayNames() {
+    for (EffectType effectType : EffectType.values()) {
+      String configName = effectType.getConfigName();
+      effectType.setDisplayName(getConfig().getString(configName + "-display-name"));
     }
   }
 }

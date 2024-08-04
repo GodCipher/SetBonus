@@ -1,11 +1,10 @@
 package de.godcipher.setbonus.util;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import de.godcipher.setbonus.set.EffectType;
 import de.godcipher.setbonus.set.SetBonusStats;
 import de.godcipher.setbonus.set.SetType;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,7 +14,7 @@ public class ItemStackUtil {
   private static final String BONUS_PREFIX = "§e§lSet Bonus:";
 
   public static void applyLoreToItem(
-          ItemStack itemStack, SetBonusStats setBonusStats, boolean active, double setPercentage) {
+      ItemStack itemStack, SetBonusStats setBonusStats, boolean active, double setPercentage) {
     ItemMeta itemMeta = itemStack.getItemMeta();
     if (itemMeta == null) return;
 
@@ -23,6 +22,7 @@ public class ItemStackUtil {
 
     if (setBonusStats != null) {
       List<Map.Entry<EffectType, Integer>> positiveBonuses = getPositiveBonuses(setBonusStats);
+      if (positiveBonuses.isEmpty()) return;
       int bonusesToHighlight = (int) Math.round(positiveBonuses.size() * setPercentage);
 
       for (int i = 0; i < positiveBonuses.size(); i++) {
@@ -55,6 +55,6 @@ public class ItemStackUtil {
 
   private static String formatLoreLine(Map.Entry<EffectType, Integer> entry, boolean active) {
     String colorCode = active ? "§a" : "§7";
-    return colorCode + "[" + entry.getKey().getDisplayName() + " " + entry.getValue() + "%]";
+    return colorCode + "[" + entry.getKey().getDisplayName() + " +" + entry.getValue() + "%]";
   }
 }

@@ -3,7 +3,6 @@ package de.godcipher.setbonus.set;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 

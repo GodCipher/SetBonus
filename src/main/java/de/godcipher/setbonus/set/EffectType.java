@@ -1,5 +1,10 @@
 package de.godcipher.setbonus.set;
 
+import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
 public enum EffectType {
   SPEED("speed", "Speed"),
   MELEE_DAMAGE("melee-damage", "Melee Damage"),
@@ -13,7 +18,8 @@ public enum EffectType {
   MAX_HEALTH("max-health", "Max Health");
 
   private final String configName;
-  private final String displayName;
+  @Setter private String displayName;
+  private final String defaultDisplayName;
 
   /**
    * Constructor for EffectType.
@@ -24,24 +30,12 @@ public enum EffectType {
   EffectType(String configName, String displayName) {
     this.configName = configName;
     this.displayName = displayName;
+    this.defaultDisplayName = displayName;
   }
 
-  /**
-   * Gets the configuration name.
-   *
-   * @return The configuration name.
-   */
-  public String getConfigName() {
-    return configName;
-  }
-
-  /**
-   * Gets the display name.
-   *
-   * @return The human-readable display name.
-   */
-  public String getDisplayName() {
-    return displayName;
+  /** Resets the display name to its default value. */
+  public void resetDisplayName() {
+    this.displayName = this.defaultDisplayName;
   }
 
   /**
@@ -57,5 +51,19 @@ public enum EffectType {
       }
     }
     return null;
+  }
+
+  /**
+   * Loads display names from a configuration map.
+   *
+   * @param configMap A map containing configuration names and display names.
+   */
+  public static void loadDisplayNamesFromConfig(Map<String, String> configMap) {
+    for (EffectType type : EffectType.values()) {
+      String newDisplayName = configMap.get(type.getConfigName());
+      if (newDisplayName != null) {
+        type.setDisplayName(newDisplayName);
+      }
+    }
   }
 }
