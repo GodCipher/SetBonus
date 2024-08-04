@@ -1,10 +1,10 @@
 package de.godcipher.setbonus.listener;
 
 import com.jeff_media.armorequipevent.ArmorEquipEvent;
-import de.godcipher.setbonus.set.StatType;
 import de.godcipher.setbonus.set.SetBonusMapper;
 import de.godcipher.setbonus.set.SetBonusStats;
 import de.godcipher.setbonus.set.SetType;
+import de.godcipher.setbonus.set.StatType;
 import de.godcipher.setbonus.util.ItemStackUtil;
 import de.godcipher.setbonus.util.PlayerEquipmentChecker;
 import org.bukkit.Material;
@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -62,6 +63,29 @@ public class SetBonusListener implements Listener {
 
       reducedDamage = Math.max(0, reducedDamage);
       event.setDamage(reducedDamage);
+    }
+  }
+
+  @EventHandler
+  public void onFoodSaturation(FoodLevelChangeEvent event) {
+    if (event.getEntity() instanceof Player) {
+      Player player = (Player) event.getEntity();
+      SetType setType = PlayerEquipmentChecker.getSetType(player);
+      if (setType == null) {
+        return;
+      }
+
+      SetBonusStats setBonusStats = setBonusMapper.getSetBonusStatsMap().get(setType);
+      SetBonusStats playerStats =
+          setBonusStats.getPercentageOfStats(
+              PlayerEquipmentChecker.getPlayerSetPercentage(player, setType));
+
+      if (event.getFoodLevel() > player.getFoodLevel()) {
+        event.setFoodLevel(
+            (int)
+                (event.getFoodLevel()
+                    * (1 + playerStats.getStats().get(StatType.FOOD_SATURATION) / 100.0)));
+      }
     }
   }
 

@@ -14,6 +14,7 @@ public enum StatType {
   DROP_CHANCE("drop-chance", "Drop Chance"),
   EXPERIENCE_GAIN("experience-gain", "Experience Gain"),
   REGENERATION("regeneration", "Regeneration"),
+  FOOD_SATURATION("food-saturation", "Food Saturation"),
   EXPLOSION_DAMAGE_REDUCTION("explosion-damage-reduction", "Explosion Damage Reduction"),
   MAX_HEALTH("max-health", "Max Health");
 
