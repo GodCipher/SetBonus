@@ -4,9 +4,9 @@ import com.jeff_media.armorequipevent.ArmorEquipEvent;
 import de.godcipher.setbonus.listener.SetBonusListener;
 import de.godcipher.setbonus.scheduler.EquipmentUpdateScheduler;
 import de.godcipher.setbonus.scheduler.PassiveStatsScheduler;
-import de.godcipher.setbonus.set.StatType;
 import de.godcipher.setbonus.set.SetBonusMapper;
 import de.godcipher.setbonus.set.SetType;
+import de.godcipher.setbonus.set.StatType;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -46,8 +46,8 @@ public final class SetBonusPlugin extends JavaPlugin {
 
   private void startScheduler() {
     getServer()
-            .getScheduler()
-            .runTaskTimer(this, new EquipmentUpdateScheduler(setBonusMapper), 0, 20);
+        .getScheduler()
+        .runTaskTimer(this, new EquipmentUpdateScheduler(setBonusMapper), 0, 20);
     getServer().getScheduler().runTaskTimer(this, new PassiveStatsScheduler(setBonusMapper), 0, 20);
   }
 
@@ -65,6 +65,7 @@ public final class SetBonusPlugin extends JavaPlugin {
     FileConfiguration existingConfig = YamlConfiguration.loadConfiguration(configFile);
 
     try (PrintWriter writer = new PrintWriter(configFile)) {
+      writer.println("# Config version: " + getDescription().getVersion());
       writer.println("# ALL VALUES ARE PERCENTAGES\n");
       writeDisplayNames(writer, existingConfig);
       writeSetBonusValues(writer, existingConfig);
@@ -77,7 +78,8 @@ public final class SetBonusPlugin extends JavaPlugin {
     writer.println("# Display Names");
     for (StatType statType : StatType.values()) {
       String key = statType.getConfigName() + "-display-name";
-      String displayName = existingConfig.contains(key) ? existingConfig.getString(key) : statType.getDisplayName();
+      String displayName =
+          existingConfig.contains(key) ? existingConfig.getString(key) : statType.getDisplayName();
       writer.printf("%s-display-name: %s%n", statType.getConfigName(), displayName);
     }
     writer.println();
