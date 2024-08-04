@@ -110,9 +110,16 @@ public class SetBonusListener implements Listener {
     }
   }
 
+  boolean damageCalled = false;
+
   /** Handles damage dealing and reflection based on player's equipment set bonus. */
   @EventHandler
   public void onDamageDealing(EntityDamageByEntityEvent event) {
+    if (damageCalled) {
+      damageCalled = false;
+      return;
+    }
+
     if (!(event.getDamager() instanceof Player)) {
       return;
     }
@@ -137,6 +144,7 @@ public class SetBonusListener implements Listener {
         && event.getEntity() instanceof LivingEntity) {
       double reflectedDamage =
           increasedDamage * playerStats.getStats().get(StatType.DAMAGE_REFLECTION) / 100.0;
+      damageCalled = true;
       ((LivingEntity) event.getEntity()).damage(reflectedDamage, player);
     }
   }

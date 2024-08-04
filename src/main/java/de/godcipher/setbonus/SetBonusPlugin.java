@@ -25,7 +25,6 @@ public final class SetBonusPlugin extends JavaPlugin {
   public void onEnable() {
     setupBStats();
     loadConfig();
-    generateAndMergeConfig();
     loadFromConfig();
     startScheduler();
     registerListener();
@@ -37,6 +36,8 @@ public final class SetBonusPlugin extends JavaPlugin {
   private void loadConfig() {
     getConfig().options().copyDefaults(true);
     saveDefaultConfig();
+
+    generateAndMergeConfig();
   }
 
   private void loadFromConfig() {
