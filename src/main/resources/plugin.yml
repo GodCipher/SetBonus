@@ -1,0 +1,4 @@
+name: SetBonus
+version: '${project.version}'
+main: de.godcipher.setbonus.SetBonusPlugin
+api-version: '1.13'
