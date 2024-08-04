@@ -63,26 +63,31 @@ public final class SetBonusPlugin extends JavaPlugin {
     if (isConfigEmpty()) {
       try (PrintWriter writer = new PrintWriter(configFile)) {
         writer.println("# ALL VALUES ARE PERCENTAGES\n");
-
-        writer.println("# Display Names");
-        for (EffectType effectType : EffectType.values()) {
-          writer.println(
-              effectType.getConfigName() + "-display-name: " + effectType.getDisplayName());
-        }
-        writer.println();
-
-        writer.println("# Set Bonus Values");
-        for (SetType setType : SetType.values()) {
-          writer.println(setType.name() + ":");
-          for (EffectType effectType : EffectType.values()) {
-            String configName = effectType.getConfigName();
-            writer.println("  " + configName + ": " + 0);
-          }
-          writer.println();
-        }
+        writeDisplayNames(writer);
+        writeSetBonusValues(writer);
       } catch (IOException e) {
         e.printStackTrace();
       }
+    }
+  }
+
+  private void writeDisplayNames(PrintWriter writer) {
+    writer.println("# Display Names");
+    for (EffectType effectType : EffectType.values()) {
+      writer.printf(
+          "%s-display-name: %s%n", effectType.getConfigName(), effectType.getDisplayName());
+    }
+    writer.println();
+  }
+
+  private void writeSetBonusValues(PrintWriter writer) {
+    writer.println("# Set Bonus Values");
+    for (SetType setType : SetType.values()) {
+      writer.println(setType.name() + ":");
+      for (EffectType effectType : EffectType.values()) {
+        writer.printf("  %s: %d%n", effectType.getConfigName(), 0);
+      }
+      writer.println();
     }
   }
 
