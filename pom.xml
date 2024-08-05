@@ -35,7 +35,7 @@
                     <relocations>
                         <relocation>
                             <pattern>com.jeff_media.armorequipevent</pattern>
-                            <shadedPattern>de.luzifer.setbonus.armorequipevent</shadedPattern>
+                            <shadedPattern>de.godcipher.setbonus.armorequipevent</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
