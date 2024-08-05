@@ -6,18 +6,19 @@ import lombok.Setter;
 
 @Getter
 public enum StatType {
-  SPEED("speed", "Speed"),
   MELEE_DAMAGE("melee-damage", "Melee Damage"),
+  PROJECTILE_DAMAGE("projectile-damage", "Projectile Damage"),
   PROJECTILE_DAMAGE_REDUCTION("projectile-damage-reduction", "Projectile Damage Reduction"),
   DAMAGE_REDUCTION("damage-reduction", "Damage Reduction"),
   FIRE_DAMAGE_REDUCTION("fire-damage-reduction", "Fire Damage Reduction"),
   FALL_DAMAGE_REDUCTION("fall-damage-reduction", "Fall Damage Reduction"),
+  EXPLOSION_DAMAGE_REDUCTION("explosion-damage-reduction", "Explosion Damage Reduction"),
   DAMAGE_REFLECTION("damage-reflection", "Damage Reflection"),
+  SPEED("speed", "Speed"),
   DROP_CHANCE("drop-chance", "Drop Chance"),
   EXPERIENCE_GAIN("experience-gain", "Experience Gain"),
   REGENERATION("regeneration", "Regeneration"),
   FOOD_SATURATION("food-saturation", "Food Saturation"),
-  EXPLOSION_DAMAGE_REDUCTION("explosion-damage-reduction", "Explosion Damage Reduction"),
   MONSTER_INVISIBILITY("monster-invisibility", "Monster Invisibility"),
   MAX_HEALTH("max-health", "Max Health");
 

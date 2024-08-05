@@ -9,6 +9,7 @@ import de.godcipher.setbonus.util.ItemStackUtil;
 import de.godcipher.setbonus.util.PlayerEquipmentChecker;
 import org.bukkit.Material;
 import org.bukkit.enchantments.EnchantmentTarget;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -120,20 +121,37 @@ public class SetBonusListener implements Listener {
       return;
     }
 
-    if (!(event.getDamager() instanceof Player)) {
+    if (event.getDamager() instanceof Arrow) {
+      handleArrowDamage(event);
+    } else if (event.getDamager() instanceof Player) {
+      handlePlayerDamage(event);
+    }
+  }
+
+  private void handleArrowDamage(EntityDamageByEntityEvent event) {
+    Arrow arrow = (Arrow) event.getDamager();
+    if (!(arrow.getShooter() instanceof Player)) {
       return;
     }
 
+    Player player = (Player) arrow.getShooter();
+    SetBonusStats playerStats = getPlayerStats(player);
+    if (playerStats == null) {
+      return;
+    }
+
+    double baseDamage = event.getDamage();
+    double increasedDamage =
+        baseDamage * (1 + playerStats.getStats().get(StatType.PROJECTILE_DAMAGE) / 100.0);
+    event.setDamage(increasedDamage);
+  }
+
+  private void handlePlayerDamage(EntityDamageByEntityEvent event) {
     Player player = (Player) event.getDamager();
-    SetType setType = PlayerEquipmentChecker.getSetType(player);
-    if (setType == null) {
+    SetBonusStats playerStats = getPlayerStats(player);
+    if (playerStats == null) {
       return;
     }
-
-    SetBonusStats setBonusStats = setBonusMapper.getSetBonusStatsMap().get(setType);
-    SetBonusStats playerStats =
-        setBonusStats.getPercentageOfStats(
-            PlayerEquipmentChecker.getPlayerSetPercentage(player, setType));
 
     double baseDamage = event.getDamage();
     double increasedDamage =
@@ -147,6 +165,17 @@ public class SetBonusListener implements Listener {
       damageCalled = true;
       ((LivingEntity) event.getEntity()).damage(reflectedDamage, player);
     }
+  }
+
+  private SetBonusStats getPlayerStats(Player player) {
+    SetType setType = PlayerEquipmentChecker.getSetType(player);
+    if (setType == null) {
+      return null;
+    }
+
+    SetBonusStats setBonusStats = setBonusMapper.getSetBonusStatsMap().get(setType);
+    return setBonusStats.getPercentageOfStats(
+        PlayerEquipmentChecker.getPlayerSetPercentage(player, setType));
   }
 
   /** Adjusts experience gain based on player's equipment set bonus. */
